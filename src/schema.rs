@@ -4,7 +4,7 @@ pub fn validate_json<'a>(
     compiled_schema: &'a JSONSchema,
     json_data: &'a serde_json::Value,
 ) -> Result<(), jsonschema::ErrorIterator<'a>> {
-    let _ = compiled_schema.validate(json_data)?;
+    compiled_schema.validate(json_data)?;
     Ok(())
 }
 

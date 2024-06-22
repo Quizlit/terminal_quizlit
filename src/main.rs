@@ -3,7 +3,7 @@ use serde_json::json;
 mod schema;
 
 fn main() {
-    println!("Hello, world!");
+    println!("Hello, World!");
 
     let schema = json!({"maxLength": 5});
     let instance = json!("foo failing");
