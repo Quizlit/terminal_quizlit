@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
 jobs:
-  tests:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,3 +30,16 @@ jobs:
 
       - name: Unit tests & all precommit checks
         run: pre-commit run --all-files -v
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+      - name: Run cargo test
+        run: |
+          cargo test
