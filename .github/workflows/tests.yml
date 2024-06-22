@@ -29,4 +29,4 @@ jobs:
         run: pre-commit install
 
       - name: Unit tests & all precommit checks
-        run: pre-commit run --all-files
+        run: pre-commit run --all-files -v
