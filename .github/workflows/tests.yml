@@ -1,0 +1,45 @@
+name: "Tests and Linting"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: install rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Setup pre-commit
+        run: pre-commit install
+
+      - name: Unit tests & all precommit checks
+        run: pre-commit run --all-files -v
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+      - name: Run cargo test
+        run: |
+          cargo test
