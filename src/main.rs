@@ -1,14 +1,22 @@
-use serde_json::json;
-
+mod requests;
 mod schema;
 
-fn main() {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let schema = requests::get_json(
+        "https://raw.githubusercontent.com/Quizlit/schemas/main/src/schemas/v1/quizlit.json",
+    )
+    .await?;
+
+    let instance = requests::get_json(
+        "https://raw.githubusercontent.com/Quizlit/schemas/main/src/schemas/v1/examples/20_questions.json",
+    )
+    .await?;
+
     println!("Hello, World!");
 
-    let schema = json!({"maxLength": 5});
-    let instance = json!("foo failing");
-
-    let compiled = schema::compile_json_schema(&schema).expect("A valid schema");
+    let compiled =
+        schema::compile_json_schema(&schema).expect("Compiling the schema should not fail");
     let result = schema::validate_json(&compiled, &instance);
     if let Err(errors) = result {
         for error in errors {
@@ -16,4 +24,6 @@ fn main() {
             println!("Instance path: {}", error.instance_path);
         }
     }
+
+    Ok(())
 }
