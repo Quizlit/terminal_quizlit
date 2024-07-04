@@ -1,6 +1,7 @@
 mod quizlit;
 mod requests;
 mod schema;
+mod template;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
