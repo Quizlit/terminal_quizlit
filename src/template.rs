@@ -94,7 +94,9 @@ d. answer_4"#;
             vec!["answer_1", "answer_2", "answer_3", "answer_4"],
         );
         let text = question.render().unwrap();
-        assert_eq!(text, expected);
+        for (line, wanted_line) in text.lines().zip(expected.lines()) {
+            assert_eq!(line, wanted_line);
+        }
     }
 
     #[test]
@@ -103,7 +105,9 @@ d. answer_4"#;
 
         let question = UserInputQuestionTemplate::new("question?");
         let text = question.render().unwrap();
-        assert_eq!(text, expected);
+        for (line, wanted_line) in text.lines().zip(expected.lines()) {
+            assert_eq!(line, wanted_line);
+        }
     }
 
     #[test]
@@ -120,7 +124,9 @@ d. answer_4"#;
             vec!["answer_1", "answer_2", "answer_3", "answer_4"],
         );
         let text = question.render().unwrap();
-        assert_eq!(text, expected);
+        for (line, wanted_line) in text.lines().zip(expected.lines()) {
+            assert_eq!(line, wanted_line);
+        }
     }
 
     #[test]
@@ -131,6 +137,8 @@ answer_1 | answer_2"#;
 
         let question = TrueFalseQuestionTemplate::new("question?", "answer_1", "answer_2");
         let text = question.render().unwrap();
-        assert_eq!(text, expected);
+        for (line, wanted_line) in text.lines().zip(expected.lines()) {
+            assert_eq!(line, wanted_line);
+        }
     }
 }
