@@ -1,0 +1,3 @@
+Question: {{ question }}
+{% for answer in answers %}
+{{answer}}{% endfor %}
