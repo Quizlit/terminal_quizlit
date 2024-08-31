@@ -3,6 +3,19 @@ mod requests;
 mod schema;
 mod template;
 
+fn get_questions(json: &serde_json::Value) -> Result<Vec<quizlit::Question>, String> {
+    let mut result = Vec::new();
+    let json_questions = json["questions"].as_array().expect("valid json");
+    for data in json_questions {
+        match quizlit::Question::new(data.clone()) {
+            Ok(question) => result.push(question),
+            Err(_) => return Err(format!("Unable to create question from {:?}", data)),
+        }
+    }
+
+    Ok(result)
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let schema = requests::get_json(
@@ -28,11 +41,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    let mut list = Vec::new();
-    let my_json = instance["questions"].as_array().expect("valid json");
-    for data in my_json {
-        list.push(quizlit::Question::new(data.clone()));
-    }
+    let list = get_questions(&instance).unwrap();
     println!("{:#?}", list);
 
     Ok(())
