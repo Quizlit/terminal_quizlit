@@ -1,3 +1,5 @@
-Question: {{ question }}
+{% extends "base.txt" %}
 
-{{ answer_1 }} | {{ answer_2 }}
+{% block content %}Question: {{ question }}
+
+  {{ answer_1 }} | {{ answer_2 }} {% endblock %}

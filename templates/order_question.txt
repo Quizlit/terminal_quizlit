@@ -1,3 +1,5 @@
-Question: {{ question }}
+{% extends "base.txt" %}
+
+{% block content %}Question: {{ question }}
 {% for answer in answers %}
-{{answer}}{% endfor %}
+  {{answer}}{% endfor %}{% endblock %}

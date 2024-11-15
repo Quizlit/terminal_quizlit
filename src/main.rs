@@ -3,6 +3,8 @@ mod requests;
 mod schema;
 mod template;
 
+use std::io::Write;
+
 use askama::Template;
 
 use crate::quizlit::{AnswerTrait, QuestionTrait, QuestionType};
@@ -160,7 +162,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let question_text = question_list_display.current_question();
         // Print stuff to screen
-        println!("{question_text}",);
+        print!("{question_text}");
+        //print!(">>> ");
+        std::io::stdout().flush().unwrap();
 
         // Get user input
         let mut user_input = String::new();
