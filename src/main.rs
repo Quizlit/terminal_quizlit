@@ -3,6 +3,7 @@ mod requests;
 mod schema;
 mod template;
 
+use std::collections::HashMap;
 use std::io::Write;
 
 use askama::Template;
@@ -32,6 +33,10 @@ impl QuestionListDisplay {
             questions,
             index: 0,
         }
+    }
+
+    fn current_index(&self) -> usize {
+        self.index
     }
 
     fn previous(&mut self) -> Option<String> {
@@ -105,6 +110,7 @@ enum Command {
     Previous,
     Quit,
     Unknown,
+    Answer,
 }
 
 fn parse_command(input: &str) -> Command {
@@ -112,7 +118,7 @@ fn parse_command(input: &str) -> Command {
         "n" | "next" => Command::Next,
         "p" | "previous" => Command::Previous,
         "q" | "Quit" => Command::Quit,
-        _ => Command::Unknown,
+        _ => Command::Answer,
     }
 }
 
@@ -155,6 +161,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let list = get_questions(&instance).unwrap();
 
     let mut question_list_display = QuestionListDisplay::new(list);
+    let mut answers = HashMap::new();
 
     let mut current_command = Command::Unknown;
     while current_command != Command::Quit {
@@ -163,7 +170,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let question_text = question_list_display.current_question();
         // Print stuff to screen
         print!("{question_text}");
-        //print!(">>> ");
+
+        // Needed to make sure that the text right before the user input
+        // gets written to the screen.
         std::io::stdout().flush().unwrap();
 
         // Get user input
@@ -187,8 +196,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
             Command::Quit => {}
             Command::Unknown => {}
+            Command::Answer => {
+                answers.insert(question_list_display.current_index(), user_input.clone());
+                match question_list_display.next() {
+                    Some(_) => {}
+                    None => {
+                        println!("No next question")
+                    }
+                }
+            }
         }
     }
+
+    println!("{:?}", answers);
 
     Ok(())
 }
