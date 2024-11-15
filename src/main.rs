@@ -156,6 +156,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut current_command = Command::Unknown;
     while current_command != Command::Quit {
+        clearscreen::clear().expect("failed to clear screen");
+
         let question_text = question_list_display.current_question();
         // Print stuff to screen
         println!("{question_text}",);
