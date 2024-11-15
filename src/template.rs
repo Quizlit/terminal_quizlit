@@ -3,7 +3,7 @@ use askama::Template;
 #[allow(dead_code)]
 #[derive(Template)]
 #[template(path = "true_false_question.txt")]
-struct TrueFalseQuestionTemplate<'a> {
+pub struct TrueFalseQuestionTemplate<'a> {
     question: &'a str,
     answer_1: &'a str,
     answer_2: &'a str,
@@ -23,7 +23,7 @@ impl<'a> TrueFalseQuestionTemplate<'a> {
 #[allow(dead_code)]
 #[derive(Template)]
 #[template(path = "selection_question.txt")]
-struct SelectionQuestionTemplate<'a> {
+pub struct SelectionQuestionTemplate<'a> {
     question: &'a str,
     answers: Vec<String>,
 }
@@ -44,7 +44,7 @@ impl<'a> SelectionQuestionTemplate<'a> {
 #[allow(dead_code)]
 #[derive(Template)]
 #[template(path = "user_input_question.txt")]
-struct UserInputQuestionTemplate<'a> {
+pub struct UserInputQuestionTemplate<'a> {
     question: &'a str,
 }
 
@@ -58,7 +58,7 @@ impl<'a> UserInputQuestionTemplate<'a> {
 #[allow(dead_code)]
 #[derive(Template)]
 #[template(path = "order_question.txt")]
-struct OrderQuestionTemplate<'a> {
+pub struct OrderQuestionTemplate<'a> {
     question: &'a str,
     answers: Vec<String>,
 }
